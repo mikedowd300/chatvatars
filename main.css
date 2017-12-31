@@ -41,9 +41,11 @@ body {
 }
 
 .messages-wrapper {
+  display: flex;
   width: 100%;
   height: 80%;
   padding: 12px;
+  flex-direction: column-reverse;
   box-sizing: border-box;
 }
 
@@ -59,4 +61,10 @@ body {
   padding: 12px;
   font-size: 1.2em;
   box-sizing: border-box;
+}
+
+.sent-message {
+  width: 90%;
+  text-align: right;
+  margin-left: 10%;
 }
