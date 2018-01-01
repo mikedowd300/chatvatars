@@ -47,6 +47,7 @@ body {
   padding: 12px;
   flex-direction: column-reverse;
   box-sizing: border-box;
+  overflow: auto;
 }
 
 .new-message-wrapper {
