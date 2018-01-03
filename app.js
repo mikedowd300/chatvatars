@@ -12,7 +12,7 @@ $(document).ready(() => {
   if( socket !== undefined) {
     socket.on('say-hi', (data) => {
       console.log(data);
-      displayAvatars();
+      displayAvatars(data.avatars);
     })
   }
 
@@ -22,6 +22,13 @@ $(document).ready(() => {
   });
 
 });
+
+displayAvatars = (avs) => {
+  avs.forEach( av => {
+    let element = `<div class="image-wrapper circle"><img class="avatar-image" src="${av}"></div>`
+    $('.avatar-wrapper').append(element);
+  });
+}
 
 postSentMessage = () => {
   if(event.which === 13) {
