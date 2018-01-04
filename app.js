@@ -1,5 +1,10 @@
 $(document).ready(() => {
 
+  let chatter = {
+    avatar: '',
+    message: ''
+  }
+
   let serverUrl = 'http://127.0.0.1:4200';
 
   try {
@@ -16,25 +21,30 @@ $(document).ready(() => {
     })
   }
 
-
   $('.new-message').keyup((event) => {
     postSentMessage();
   });
 
-});
+  displayAvatars = (avs) => {
+    avs.forEach( av => {
+      let $element = $(`<div class="image-wrapper circle"><img class="avatar-image" src="${av}"></div>`);
 
-displayAvatars = (avs) => {
-  avs.forEach( av => {
-    let element = `<div class="image-wrapper circle"><img class="avatar-image" src="${av}"></div>`
-    $('.avatar-wrapper').append(element);
-  });
-}
+      $element.click(() => {
+        console.log('hello');
+        chatter.avatar = av;
+      });
 
-postSentMessage = () => {
-  if(event.which === 13) {
-    let message = $('.new-message').val();
-    let element = `<div class="sent-message"><p>${message}</p></div>`;
-    $('.messages-wrapper').prepend(element);
-    $('.new-message').val('');
+      $('.avatar-wrapper').append($element);
+    });
   }
-}
+
+  postSentMessage = () => {
+    if(event.which === 13) {
+      let message = $('.new-message').val();
+      let element = `<div class="sent-message border flexer"><p>${message}</p><img class="avatar-mini circle border" src="${chatter.avatar}"></div>`;
+      $('.messages-wrapper').prepend(element);
+      $('.new-message').val('');
+    }
+  }
+
+});
