@@ -17,10 +17,15 @@ $(document).ready(() => {
   }
 
   if( socket !== undefined) {
+
     socket.on('say-hi', (data) => {
-      console.log(data);
-      displayAvatars(data.avatars);
+      displayAvatars(data);
     })
+
+    socket.on('redisplay-avatar-list', data => {
+      displayAvatars(data);
+    });
+
   }
 
   $('.new-message').keyup((event) => {
@@ -28,6 +33,12 @@ $(document).ready(() => {
   });
 
   displayAvatars = (avs) => {
+    if(isActive) {
+      avs = avs.usedAvatars;
+    } else {
+      avs = avs.avatars;
+    }
+    $('.avatar-wrapper').empty();
     avs.forEach( av => {
       let $element = $(`<div class="image-wrapper circle"><img class="avatar-image" src="${av}"></div>`);
       createAvatarClickedEvent($element, av);
@@ -40,6 +51,7 @@ $(document).ready(() => {
       chatter.avatar = av;
       $('.new-message').attr('placeholder', '');
       isActive = true;
+      socket.emit('chatter-added', av);
     });
   }
 
@@ -51,7 +63,6 @@ $(document).ready(() => {
       $('.messages-wrapper').prepend(element);
       $('.new-message').val('');
     } else if(event.which === 13 && !isActive ) {
-      console.log('wrong!!!!');
       let $message = $(`<p class="nasty-message">YOU MUST FIRST SELECT AN AVATAR!!!</p>`);
       $('.messages-wrapper').prepend($message);
     }
