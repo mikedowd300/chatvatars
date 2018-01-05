@@ -5,3 +5,5 @@ square avatars
 we can send an empty string
 
 some pictures are not rendering
+
+messages should be scrollable, currently the just scrunch

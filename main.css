@@ -6,6 +6,10 @@ body {
   background-color: black;
 }
 
+.hidden {
+  display: none;
+}
+
 .flexer {
   display: flex;
 }
@@ -91,4 +95,9 @@ body {
 
 p {
   font-size: 1.5em;
+}
+
+.nasty-message {
+  font-size: 2em;
+  color: red;
 }
