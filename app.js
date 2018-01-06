@@ -7,7 +7,7 @@ $(document).ready(() => {
 
   let isActive = false;
 
-  let serverUrl = 'http://127.0.0.1:4200';
+  let serverUrl = 'http://127.0.0.1:4300';
 
   try {
     var socket = io.connect(serverUrl);
@@ -18,11 +18,7 @@ $(document).ready(() => {
 
   if( socket !== undefined) {
 
-    socket.on('say-hi', (data) => {
-      displayAvatars(data);
-    })
-
-    socket.on('redisplay-avatar-list', data => {
+    socket.on('display-avatars', data => {
       displayAvatars(data);
     });
 
@@ -33,15 +29,11 @@ $(document).ready(() => {
   });
 
   displayAvatars = (avs) => {
-    if(isActive) {
-      avs = avs.usedAvatars;
-    } else {
-      avs = avs.avatars;
-    }
+    avs = (isActive ? avs.usedAvatars : avs.avatars);
     $('.avatar-wrapper').empty();
     avs.forEach( av => {
       let $element = $(`<div class="image-wrapper circle"><img class="avatar-image" src="${av}"></div>`);
-      createAvatarClickedEvent($element, av);
+      if(!isActive) createAvatarClickedEvent($element, av);
       $('.avatar-wrapper').append($element);
     });
   }
