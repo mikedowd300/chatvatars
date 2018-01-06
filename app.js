@@ -1,9 +1,6 @@
 $(document).ready(() => {
 
-  let chatter = {
-    avatar: '',
-    message: ''
-  }
+  let avatar = '';
 
   let isActive = false;
 
@@ -30,23 +27,22 @@ $(document).ready(() => {
 
   postReceivedMessage = (data) => {
     if(socket.id !== data.id) {
-      let element = `<div class="received-message border flexer"><img class="avatar-mini circle border" src="${data.avatar}"><p>${data.message}</p></div>`;
+      let element = `<div class="received-message flexer"><p class="flip-me">${data.message}</p><img class="avatar-mini circle " src="${data.avatar}"></div>`;
       $('.messages-wrapper').prepend(element);
     }
   }
 
   postSentMessage = () => {
-    if(event.which === 13 && isActive) {
-      broadcastMessage();
+    let message = $('.new-message').val().trim();
+    if(event.which === 13 && isActive && message.length > 0 ) {
+      socket.emit('incoming-message', { message, id: socket.id, avatar });
       $('.nasty-message').addClass('hidden');
-      let message = $('.new-message').val();
-      let element = `<div class="sent-message border flexer"><p>${message}</p><img class="avatar-mini circle border" src="${chatter.avatar}"></div>`;
-      $('.messages-wrapper').prepend(element);
+      var element = `<div class="sent-message flexer"><img class="avatar-mini circle" src="${avatar}"><p class="flip-me">${message}</p></div>`;
       $('.new-message').val('');
     } else if(event.which === 13 && !isActive ) {
-      let $message = $(`<p class="nasty-message">YOU MUST FIRST SELECT AN AVATAR!!!</p>`);
-      $('.messages-wrapper').prepend($message);
+      var element = $(`<p class="nasty-message">YOU MUST FIRST SELECT AN AVATAR!!!</p>`);
     }
+    $('.messages-wrapper').prepend(element);
   }
 
   $('.new-message').keyup((event) => {
@@ -65,16 +61,11 @@ $(document).ready(() => {
 
   createAvatarClickedEvent = ($elem, av) => {
     $elem.click(() => {
-      chatter.avatar = av;
+      avatar = av;
       $('.new-message').attr('placeholder', '');
       isActive = true;
       socket.emit('chatter-added', av);
     });
-  }
-
-  broadcastMessage = () => {
-    let message = $('.new-message').val();
-    socket.emit('incoming-message', { message, id: socket.id, avatar: chatter.avatar });
   }
 
 });
