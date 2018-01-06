@@ -22,6 +22,31 @@ $(document).ready(() => {
       displayAvatars(data);
     });
 
+    socket.on('new-message', data => {
+      postReceivedMessage(data);
+    });
+
+  }
+
+  postReceivedMessage = (data) => {
+    if(socket.id !== data.id) {
+      let element = `<div class="received-message border flexer"><img class="avatar-mini circle border" src="${data.avatar}"><p>${data.message}</p></div>`;
+      $('.messages-wrapper').prepend(element);
+    }
+  }
+
+  postSentMessage = () => {
+    if(event.which === 13 && isActive) {
+      broadcastMessage();
+      $('.nasty-message').addClass('hidden');
+      let message = $('.new-message').val();
+      let element = `<div class="sent-message border flexer"><p>${message}</p><img class="avatar-mini circle border" src="${chatter.avatar}"></div>`;
+      $('.messages-wrapper').prepend(element);
+      $('.new-message').val('');
+    } else if(event.which === 13 && !isActive ) {
+      let $message = $(`<p class="nasty-message">YOU MUST FIRST SELECT AN AVATAR!!!</p>`);
+      $('.messages-wrapper').prepend($message);
+    }
   }
 
   $('.new-message').keyup((event) => {
@@ -47,17 +72,9 @@ $(document).ready(() => {
     });
   }
 
-  postSentMessage = () => {
-    if(event.which === 13 && isActive) {
-      $('.nasty-message').addClass('hidden');
-      let message = $('.new-message').val();
-      let element = `<div class="sent-message border flexer"><p>${message}</p><img class="avatar-mini circle border" src="${chatter.avatar}"></div>`;
-      $('.messages-wrapper').prepend(element);
-      $('.new-message').val('');
-    } else if(event.which === 13 && !isActive ) {
-      let $message = $(`<p class="nasty-message">YOU MUST FIRST SELECT AN AVATAR!!!</p>`);
-      $('.messages-wrapper').prepend($message);
-    }
+  broadcastMessage = () => {
+    let message = $('.new-message').val();
+    socket.emit('incoming-message', { message, id: socket.id, avatar: chatter.avatar });
   }
 
 });

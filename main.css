@@ -70,9 +70,14 @@ body {
 
 .sent-message {
   width: 90%;
-  text-align: right;
   margin-left: 10%;
   justify-content: flex-end;
+}
+
+.received-message {
+  width: 90%;
+  margin-right: 10%;
+  justify-content: flex-start;
 }
 
 .image-wrapper {
