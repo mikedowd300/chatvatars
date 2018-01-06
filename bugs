@@ -6,4 +6,11 @@ we can send an empty string
 
 some pictures are not rendering
 
+postSentMessage() and broadcastMessage()
+
+server - let url = idWithUrl[socket.id];
+
 messages should be scrollable, currently the just scrunch
+  transform: rotate(180deg)
+
+delete extra files
