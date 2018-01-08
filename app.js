@@ -4,7 +4,7 @@ $(document).ready(() => {
 
   let isActive = false;
 
-  let serverUrl = 'http://127.0.0.1:4300';
+  let serverUrl = 'http://chatvatars-server.herokuapp.com';
 
   try {
     var socket = io.connect(serverUrl);
